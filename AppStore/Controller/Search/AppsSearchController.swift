@@ -52,7 +52,12 @@ class AppsSearchController: BaseListController, UICollectionViewDelegateFlowLayo
         searchTimer?.invalidate()
         searchTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { (_) in
             Service.shared.fetchApps(searchTerm: searchText) {[weak self] (result, error) in
-                self?.appResults = result
+                self?.appResults = result?.results ?? []
+                if let err = error{
+                    print("Failed to fetch apps:", err)
+                    return
+                }
+                
                 DispatchQueue.main.async {[weak self] in
                     self?.collectionView.reloadData()
                 }
@@ -69,11 +74,17 @@ class AppsSearchController: BaseListController, UICollectionViewDelegateFlowLayo
                 return
             }
             
-            self?.appResults = results
+            self?.appResults = results?.results ?? []
             DispatchQueue.main.async {[weak self] in
                 self?.collectionView.reloadData()
             }
         }
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let appId = String(appResults[indexPath.item].trackId)
+        let appDetailController = AppDetailController(appId: appId)
+        navigationController?.pushViewController(appDetailController, animated: true)
     }
     
     //MARK:- UICollection View Data Source

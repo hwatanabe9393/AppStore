@@ -6,4 +6,8 @@
 //  Copyright © 2019 Hikaru Watanabe. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class BaseTodayCell: UICollectionViewCell {
+    var todayItem: TodayItem!
+}

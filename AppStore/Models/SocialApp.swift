@@ -6,4 +6,11 @@
 //  Copyright © 2019 Hikaru Watanabe. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+struct SocialApp: Decodable {
+    let id: String
+    let name: String
+    let imageUrl:String
+    let tagline: String
+}
